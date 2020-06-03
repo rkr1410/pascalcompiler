@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.function.Supplier;
 
-import static net.rkr1410.util.RiskType.TOO_SPECIFIC;
+import static net.rkr1410.util.RiskType.WRONG_ABSTRACTION_LEVEL;
 import static net.rkr1410.util.Utils.sneakThrow;
 
 /**
@@ -141,7 +141,7 @@ public class Source {
         return line != null && lineOffset > line.length();
     }
 
-    @LearningExperience(type = TOO_SPECIFIC)
+    @LearningExperience(type = WRONG_ABSTRACTION_LEVEL)
     private static <V> Supplier<V> sneakily(Callable<V> s) {
         return () -> {
             try {
