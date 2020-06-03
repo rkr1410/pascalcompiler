@@ -1,6 +1,5 @@
-package net.rkr1410.lang.frontend;
+package net.rkr1410.util;
 
-import net.rkr1410.util.IfElseChain;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -17,11 +16,15 @@ class IfElseChainTest {
 
     @Mock Supplier<String> stringSupplier;
 
-    /**
-     * Verify supplier evaluations
-     */
+/*
+ __   __              _    __                                        _   _                               _   _
+ \ \ / /  ___   _ _  (_)  / _|  _  _       ___  _  _   _ __   _ __  | | (_)  ___   _ _       __   __ _  | | | |  ___
+  \ V /  / -_) | '_| | | |  _| | || |     (_-< | || | | '_ \ | '_ \ | | | | / -_) | '_|     / _| / _` | | | | | (_-<
+   \_/   \___| |_|   |_| |_|    \_, |     /__/  \_,_| | .__/ | .__/ |_| |_| \___| |_|       \__| \__,_| |_| |_| /__/
+                                |__/                  |_|    |_|
+*/
 
-    // No conditions, just a default getter
+    /* No conditions, just a default getter */
     @Test
     void noIfThenSuppliers_elseBranchSupplierEvaluated() {
         MockitoAnnotations.initMocks(this);
@@ -31,7 +34,7 @@ class IfElseChainTest {
         verify(stringSupplier).get();
     }
 
-    // Single false condition
+    /* Single false condition */
     @Test
     void singleFalseSupplier_elseBranchSupplierEvaluated() {
         MockitoAnnotations.initMocks(this);
@@ -54,7 +57,7 @@ class IfElseChainTest {
         verify(stringSupplier, never()).get();
     }
 
-    // Single true condition
+    /* Single true condition */
     @Test
     void singleTrueSupplier_elseBranchSupplierNotEvaluated() {
         MockitoAnnotations.initMocks(this);
@@ -77,7 +80,7 @@ class IfElseChainTest {
         verify(stringSupplier).get();
     }
 
-    // Two conditions: first one is false, second one true
+    /* Two conditions: first one is false, second one true */
     @Test
     void falseTrueSuppliers_trueBranchSupplierEvaluated() {
         MockitoAnnotations.initMocks(this);
@@ -114,7 +117,7 @@ class IfElseChainTest {
         verify(stringSupplier, never()).get();
     }
 
-    // Two conditions: first one is true, second one false
+    /* Two conditions: first one is true, second one false */
     @Test
     void trueFalseSuppliers_trueBranchSupplierEvaluated() {
         MockitoAnnotations.initMocks(this);
@@ -151,7 +154,7 @@ class IfElseChainTest {
         verify(stringSupplier, never()).get();
     }
 
-    // Two conditions, both true
+    /* Two conditions, both true */
     @Test
     void trueTrueSuppliers_firstTrueBranchSupplierEvaluated() {
         MockitoAnnotations.initMocks(this);
@@ -188,9 +191,12 @@ class IfElseChainTest {
         verify(stringSupplier, never()).get();
     }
 
-    /**
-     * Assert returned results
-     */
+/*
+    _                           _                                 _   _                      _
+   /_\    ___  ___  ___   _ _  | |_       _ _   ___   ___  _  _  | | | |_      __ __  __ _  | |  _  _   ___   ___
+  / _ \  (_-< (_-< / -_) | '_| |  _|     | '_| / -_) (_-< | || | | | |  _|     \ V / / _` | | | | || | / -_) (_-<
+ /_/ \_\ /__/ /__/ \___| |_|    \__|     |_|   \___| /__/  \_,_| |_|  \__|      \_/  \__,_| |_|  \_,_| \___| /__/
+*/
 
     @Test
     void noIfThenSuppliers_elseSupplierResultReturned() {
@@ -201,7 +207,6 @@ class IfElseChainTest {
 
         assertThat(chainResult).isEqualTo(ELSE_VALUE);
     }
-
 
     @Test
     void singleFalseSupplier_elseSupplierResultReturned() {

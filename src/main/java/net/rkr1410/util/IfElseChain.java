@@ -12,7 +12,7 @@ import static net.rkr1410.util.RiskType.LAMBDA_ABUSE;
  * @param <T> returned type
  */
 @LearningExperience(type = LAMBDA_ABUSE)
-public class IfElseChain<T> {:cq
+public class IfElseChain<T> {
     private LinkedHashMap<Supplier<Boolean>, Supplier<T>> conditionalValues;
 
     public IfElseChain() {
