@@ -16,175 +16,202 @@ class IfElseChainTest {
     private static final String ELSE_VALUE = "value returned on else";
     private static final String TRUE_VALUE = "value returned when true branch evaluated";
 
-    @Mock Supplier<String> stringSupplier;
+    @Mock Supplier<String> resultEvaluator;
+    @Mock Supplier<Boolean> firstConditionFalse;
+    @Mock Supplier<Boolean> secondConditionTrue;
+    @Mock Supplier<Boolean> thirdConditionFalse;
+    @Mock Supplier<Boolean> fourthConditionTrue;
 
 /*
-               ╦  ╦┌─┐┬─┐┬┌─┐┬ ┬  ┌─┐┬ ┬┌─┐┌─┐┬  ┬┌─┐┬─┐  ┌─┐┌─┐┬  ┬  ┌─┐
-               ╚╗╔╝├┤ ├┬┘│├┤ └┬┘  └─┐│ │├─┘├─┘│  │├┤ ├┬┘  │  ├─┤│  │  └─┐
-                ╚╝ └─┘┴└─┴└   ┴   └─┘└─┘┴  ┴  ┴─┘┴└─┘┴└─  └─┘┴ ┴┴─┘┴─┘└─┘
+                   ╦  ╦┌─┐┬─┐┬┌─┐┬ ┬  ┌─┐┬ ┬┌─┐┌─┐┬  ┬┌─┐┬─┐  ┌─┐┌─┐┬  ┬  ┌─┐
+                   ╚╗╔╝├┤ ├┬┘│├┤ └┬┘  └─┐│ │├─┘├─┘│  │├┤ ├┬┘  │  ├─┤│  │  └─┐
+                    ╚╝ └─┘┴└─┴└   ┴   └─┘└─┘┴  ┴  ┴─┘┴└─┘┴└─  └─┘┴ ┴┴─┘┴─┘└─┘
+
+          A set of tests verifying if only the expected suppliers get evaluated
  */
 
     /* No conditions, just a default getter */
     @Test
-    void noIfThenSuppliers_elseBranchSupplierEvaluated() {
-        new IfElseChain<String>().elseDefault(stringSupplier);
+    void noConditions_elseBranchResultEvaluated() {
+        new IfElseChain<String>().elseDefault(resultEvaluator);
 
-        verify(stringSupplier).get();
+        verify(resultEvaluator).get();
     }
 
     /* Single false condition */
     @Test
-    void singleFalseSupplier_elseBranchSupplierEvaluated() {
+    void singleFalseCondition_elseBranchResultEvaluated() {
         new IfElseChain<String>()
                 .ifThen(() -> false, () -> "")
-                .elseDefault(stringSupplier);
+                .elseDefault(resultEvaluator);
 
-        verify(stringSupplier).get();
+        verify(resultEvaluator).get();
     }
 
     @Test
-    void singleFalseSupplier_falseBranchSupplierNotEvaluated() {
+    void singleFalseCondition_falseBranchResultNotEvaluated() {
         new IfElseChain<String>()
-                .ifThen(() -> false, stringSupplier)
+                .ifThen(() -> false, resultEvaluator)
                 .elseDefault(() -> "");
 
-        verify(stringSupplier, never()).get();
+        verify(resultEvaluator, never()).get();
     }
 
     /* Single true condition */
     @Test
-    void singleTrueSupplier_elseBranchSupplierNotEvaluated() {
+    void singleTrueCondition_elseBranchResultNotEvaluated() {
         new IfElseChain<String>()
                 .ifThen(() -> true, () -> "")
-                .elseDefault(stringSupplier);
+                .elseDefault(resultEvaluator);
 
-        verify(stringSupplier, never()).get();
+        verify(resultEvaluator, never()).get();
     }
 
     @Test
-    void singleTrueSupplier_trueBranchSupplierEvaluated() {
+    void singleTrueCondition_trueBranchResultEvaluated() {
         new IfElseChain<String>()
-                .ifThen(() -> true, stringSupplier)
+                .ifThen(() -> true, resultEvaluator)
                 .elseDefault(() -> "");
 
-        verify(stringSupplier).get();
+        verify(resultEvaluator).get();
     }
 
     /* Two conditions: first one is false, second one true */
     @Test
-    void falseTrueSuppliers_trueBranchSupplierEvaluated() {
+    void falseTrueConditions_trueBranchResultEvaluated() {
         new IfElseChain<String>()
                 .ifThen(() -> false, () -> "")
-                .ifThen(() -> true, stringSupplier)
+                .ifThen(() -> true, resultEvaluator)
                 .elseDefault(() -> "");
 
-        verify(stringSupplier).get();
+        verify(resultEvaluator).get();
     }
 
     @Test
-    void falseTrueSuppliers_falseBranchSupplierNotEvaluated() {
+    void falseTrueConditions_falseBranchResultNotEvaluated() {
         new IfElseChain<String>()
-                .ifThen(() -> false, stringSupplier)
+                .ifThen(() -> false, resultEvaluator)
                 .ifThen(() -> true, () -> "")
                 .elseDefault(() -> "");
 
-        verify(stringSupplier, never()).get();
+        verify(resultEvaluator, never()).get();
     }
 
     @Test
-    void falseTrueSuppliers_elseBranchSupplierNotEvaluated() {
+    void falseTrueConditions_elseBranchResultNotEvaluated() {
         new IfElseChain<String>()
                 .ifThen(() -> false, () -> "")
                 .ifThen(() -> true, () -> "")
-                .elseDefault(stringSupplier);
+                .elseDefault(resultEvaluator);
 
-        verify(stringSupplier, never()).get();
+        verify(resultEvaluator, never()).get();
     }
 
     /* Two conditions: first one is true, second one false */
     @Test
-    void trueFalseSuppliers_trueBranchSupplierEvaluated() {
+    void trueFalseConditions_trueBranchResultEvaluated() {
         new IfElseChain<String>()
-                .ifThen(() -> true, stringSupplier)
+                .ifThen(() -> true, resultEvaluator)
                 .ifThen(() -> false, () -> "")
                 .elseDefault(() -> "");
 
-        verify(stringSupplier).get();
+        verify(resultEvaluator).get();
     }
 
     @Test
-    void trueFalseSuppliers_falseBranchSupplierNotEvaluated() {
+    void trueFalseConditions_falseBranchResultNotEvaluated() {
         new IfElseChain<String>()
                 .ifThen(() -> true, () -> "")
-                .ifThen(() -> false, stringSupplier)
+                .ifThen(() -> false, resultEvaluator)
                 .elseDefault(() -> "");
 
-        verify(stringSupplier, never()).get();
+        verify(resultEvaluator, never()).get();
     }
 
     @Test
-    void trueFalseSuppliers_elseBranchSupplierNotEvaluated() {
+    void trueFalseConditions_elseBranchResultNotEvaluated() {
         new IfElseChain<String>()
                 .ifThen(() -> true, () -> "")
                 .ifThen(() -> false, () -> "")
-                .elseDefault(stringSupplier);
+                .elseDefault(resultEvaluator);
 
-        verify(stringSupplier, never()).get();
+        verify(resultEvaluator, never()).get();
     }
 
     /* Two conditions, both true */
     @Test
-    void trueTrueSuppliers_firstTrueBranchSupplierEvaluated() {
+    void trueTrueConditions_firstTrueBranchResultEvaluated() {
         new IfElseChain<String>()
-                .ifThen(() -> true, stringSupplier)
+                .ifThen(() -> true, resultEvaluator)
                 .ifThen(() -> true, () -> "")
                 .elseDefault(() -> "");
 
-        verify(stringSupplier).get();
+        verify(resultEvaluator).get();
     }
 
     @Test
-    void trueTrueSuppliers_secondTrueBranchSupplierNotEvaluated() {
+    void trueTrueConditions_secondTrueBranchResultNotEvaluated() {
         new IfElseChain<String>()
                 .ifThen(() -> true, () -> "")
-                .ifThen(() -> true, stringSupplier)
+                .ifThen(() -> true, resultEvaluator)
                 .elseDefault(() -> "");
 
-        verify(stringSupplier, never()).get();
+        verify(resultEvaluator, never()).get();
     }
 
     @Test
-    void trueTrueSuppliers_elseBranchSupplierNotEvaluated() {
+    void trueTrueConditions_elseBranchResultNotEvaluated() {
         new IfElseChain<String>()
                 .ifThen(() -> true, () -> "")
                 .ifThen(() -> true, () -> "")
-                .elseDefault(stringSupplier);
+                .elseDefault(resultEvaluator);
 
-        verify(stringSupplier, never()).get();
+        verify(resultEvaluator, never()).get();
+    }
+
+    @Test
+    void afterFirstTrueCondition_noneOfFollowingConditionsIsEvaluated() {
+        doReturn(false).when(firstConditionFalse).get();
+        doReturn(true).when(secondConditionTrue).get();
+
+        new IfElseChain<String>()
+                .ifThen(firstConditionFalse, () -> "")
+                .ifThen(secondConditionTrue, () -> "")
+                .ifThen(thirdConditionFalse, () -> "")
+                .ifThen(fourthConditionTrue, () -> "")
+                .elseDefault(resultEvaluator);
+
+        verify(firstConditionFalse).get();
+        verify(secondConditionTrue).get();
+        verify(thirdConditionFalse, never()).get();
+        verify(fourthConditionTrue, never()).get();
     }
 
 /*
-               ╔═╗┌─┐┌─┐┌─┐┬─┐┌┬┐  ┬─┐┌─┐┌─┐┬ ┬┬ ┌┬┐  ┬  ┬┌─┐┬  ┬ ┬┌─┐┌─┐
-               ╠═╣└─┐└─┐├┤ ├┬┘ │   ├┬┘├┤ └─┐│ ││  │   └┐┌┘├─┤│  │ │├┤ └─┐
-               ╩ ╩└─┘└─┘└─┘┴└─ ┴   ┴└─└─┘└─┘└─┘┴─┘┴    └┘ ┴ ┴┴─┘└─┘└─┘└─┘
+                   ╔═╗┌─┐┌─┐┌─┐┬─┐┌┬┐  ┬─┐┌─┐┌─┐┬ ┬┬ ┌┬┐  ┬  ┬┌─┐┬  ┬ ┬┌─┐┌─┐
+                   ╠═╣└─┐└─┐├┤ ├┬┘ │   ├┬┘├┤ └─┐│ ││  │   └┐┌┘├─┤│  │ │├┤ └─┐
+                   ╩ ╩└─┘└─┘└─┘┴└─ ┴   ┴└─└─┘└─┘└─┘┴─┘┴    └┘ ┴ ┴┴─┘└─┘└─┘└─┘
+
+          Set of tests asserting that the value returned by calling the chain is exactly
+          the value returned by evaluating the supplier for which paired condition supplier returned true as first.
 */
 
     @Test
     void noIfThenSuppliers_elseSupplierResultReturned() {
-        doReturn(ELSE_VALUE).when(stringSupplier).get();
+        doReturn(ELSE_VALUE).when(resultEvaluator).get();
 
-        String chainResult = new IfElseChain<String>().elseDefault(stringSupplier);
+        String chainResult = new IfElseChain<String>().elseDefault(resultEvaluator);
 
         assertThat(chainResult).isEqualTo(ELSE_VALUE);
     }
 
     @Test
     void singleFalseSupplier_elseSupplierResultReturned() {
-        doReturn(ELSE_VALUE).when(stringSupplier).get();
+        doReturn(ELSE_VALUE).when(resultEvaluator).get();
 
         String chainResult = new IfElseChain<String>()
                 .ifThen(() -> false, () -> "")
-                .elseDefault(stringSupplier);
+                .elseDefault(resultEvaluator);
 
         assertThat(chainResult).isEqualTo(ELSE_VALUE);
     }
@@ -192,10 +219,10 @@ class IfElseChainTest {
 
     @Test
     void singleTrueSupplier_trueSupplierResultReturned() {
-        doReturn(TRUE_VALUE).when(stringSupplier).get();
+        doReturn(TRUE_VALUE).when(resultEvaluator).get();
 
         String chainResult = new IfElseChain<String>()
-                .ifThen(() -> true, stringSupplier)
+                .ifThen(() -> true, resultEvaluator)
                 .elseDefault(() -> "");
 
         assertThat(chainResult).isEqualTo(TRUE_VALUE);
@@ -203,10 +230,10 @@ class IfElseChainTest {
 
     @Test
     void trueFalseSuppliers_trueSupplierResultReturned() {
-        doReturn(TRUE_VALUE).when(stringSupplier).get();
+        doReturn(TRUE_VALUE).when(resultEvaluator).get();
 
         String chainResult = new IfElseChain<String>()
-                .ifThen(() -> true, stringSupplier)
+                .ifThen(() -> true, resultEvaluator)
                 .ifThen(() -> false, () -> "")
                 .elseDefault(() -> "");
 
@@ -215,11 +242,11 @@ class IfElseChainTest {
 
     @Test
     void falseTrueSuppliers_firstTrueSupplierResultReturned() {
-        doReturn(TRUE_VALUE).when(stringSupplier).get();
+        doReturn(TRUE_VALUE).when(resultEvaluator).get();
 
         String chainResult = new IfElseChain<String>()
                 .ifThen(() -> false, () -> "")
-                .ifThen(() -> true, stringSupplier)
+                .ifThen(() -> true, resultEvaluator)
                 .elseDefault(() -> "");
 
         assertThat(chainResult).isEqualTo(TRUE_VALUE);
@@ -227,10 +254,10 @@ class IfElseChainTest {
 
     @Test
     void trueTrueSuppliers_firstTrueSupplierResultReturned() {
-        doReturn(TRUE_VALUE).when(stringSupplier).get();
+        doReturn(TRUE_VALUE).when(resultEvaluator).get();
 
         String chainResult = new IfElseChain<String>()
-                .ifThen(() -> true, stringSupplier)
+                .ifThen(() -> true, resultEvaluator)
                 .ifThen(() -> true, () -> "")
                 .elseDefault(() -> "");
 
