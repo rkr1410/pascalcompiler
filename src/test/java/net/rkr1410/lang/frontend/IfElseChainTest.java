@@ -1,5 +1,6 @@
 package net.rkr1410.lang.frontend;
 
+import net.rkr1410.util.IfElseChain;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;

@@ -1,14 +1,15 @@
 package net.rkr1410.lang.frontend;
 
-import net.rkr1410.LearningExperience;
+import net.rkr1410.util.IfElseChain;
+import net.rkr1410.util.LearningExperience;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.function.Supplier;
 
-import static net.rkr1410.RiskType.TOO_SPECIFIC;
-import static net.rkr1410.Utils.sneakThrow;
+import static net.rkr1410.util.RiskType.TOO_SPECIFIC;
+import static net.rkr1410.util.Utils.sneakThrow;
 
 /**
  * <h1>Source</h1>

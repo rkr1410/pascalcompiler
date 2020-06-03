@@ -1,4 +1,4 @@
-package net.rkr1410;
+package net.rkr1410.util;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

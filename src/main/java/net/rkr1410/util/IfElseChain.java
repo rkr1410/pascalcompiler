@@ -1,12 +1,9 @@
-package net.rkr1410.lang.frontend;
-
-import net.rkr1410.LearningExperience;
+package net.rkr1410.util;
 
 import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.function.Supplier;
 
-import static net.rkr1410.RiskType.LAMBDA_ABUSE;
+import static net.rkr1410.util.RiskType.LAMBDA_ABUSE;
 
 /**
  * Implementation of an if-else chain returning a generic type.
@@ -15,7 +12,7 @@ import static net.rkr1410.RiskType.LAMBDA_ABUSE;
  * @param <T> returned type
  */
 @LearningExperience(type = LAMBDA_ABUSE)
-public class IfElseChain<T> {
+public class IfElseChain<T> {:cq
     private LinkedHashMap<Supplier<Boolean>, Supplier<T>> conditionalValues;
 
     public IfElseChain() {

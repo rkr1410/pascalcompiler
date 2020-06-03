@@ -1,6 +1,6 @@
-package net.rkr1410;
+package net.rkr1410.util;
 
-import static net.rkr1410.RiskType.POTENTIAL_VALUE;
+import static net.rkr1410.util.RiskType.POTENTIAL_VALUE;
 
 public class Utils {
     /**

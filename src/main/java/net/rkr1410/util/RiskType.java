@@ -1,4 +1,4 @@
-package net.rkr1410;
+package net.rkr1410.util;
 
 public enum RiskType {
     // No analysis done
