@@ -1,14 +1,16 @@
 package net.rkr1410.util;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class IfElseChainTest {
 
     private static final String ELSE_VALUE = "value returned on else";
@@ -17,16 +19,14 @@ class IfElseChainTest {
     @Mock Supplier<String> stringSupplier;
 
 /*
-╦  ╦┌─┐┬─┐┬┌─┐┬ ┬  ┌─┐┬ ┬┌─┐┌─┐┬  ┬┌─┐┬─┐  ┌─┐┌─┐┬  ┬  ┌─┐
-╚╗╔╝├┤ ├┬┘│├┤ └┬┘  └─┐│ │├─┘├─┘│  │├┤ ├┬┘  │  ├─┤│  │  └─┐
- ╚╝ └─┘┴└─┴└   ┴   └─┘└─┘┴  ┴  ┴─┘┴└─┘┴└─  └─┘┴ ┴┴─┘┴─┘└─┘
+               ╦  ╦┌─┐┬─┐┬┌─┐┬ ┬  ┌─┐┬ ┬┌─┐┌─┐┬  ┬┌─┐┬─┐  ┌─┐┌─┐┬  ┬  ┌─┐
+               ╚╗╔╝├┤ ├┬┘│├┤ └┬┘  └─┐│ │├─┘├─┘│  │├┤ ├┬┘  │  ├─┤│  │  └─┐
+                ╚╝ └─┘┴└─┴└   ┴   └─┘└─┘┴  ┴  ┴─┘┴└─┘┴└─  └─┘┴ ┴┴─┘┴─┘└─┘
  */
 
     /* No conditions, just a default getter */
     @Test
     void noIfThenSuppliers_elseBranchSupplierEvaluated() {
-        MockitoAnnotations.initMocks(this);
-
         new IfElseChain<String>().elseDefault(stringSupplier);
 
         verify(stringSupplier).get();
@@ -35,8 +35,6 @@ class IfElseChainTest {
     /* Single false condition */
     @Test
     void singleFalseSupplier_elseBranchSupplierEvaluated() {
-        MockitoAnnotations.initMocks(this);
-
         new IfElseChain<String>()
                 .ifThen(() -> false, () -> "")
                 .elseDefault(stringSupplier);
@@ -46,8 +44,6 @@ class IfElseChainTest {
 
     @Test
     void singleFalseSupplier_falseBranchSupplierNotEvaluated() {
-        MockitoAnnotations.initMocks(this);
-
         new IfElseChain<String>()
                 .ifThen(() -> false, stringSupplier)
                 .elseDefault(() -> "");
@@ -58,8 +54,6 @@ class IfElseChainTest {
     /* Single true condition */
     @Test
     void singleTrueSupplier_elseBranchSupplierNotEvaluated() {
-        MockitoAnnotations.initMocks(this);
-
         new IfElseChain<String>()
                 .ifThen(() -> true, () -> "")
                 .elseDefault(stringSupplier);
@@ -69,8 +63,6 @@ class IfElseChainTest {
 
     @Test
     void singleTrueSupplier_trueBranchSupplierEvaluated() {
-        MockitoAnnotations.initMocks(this);
-
         new IfElseChain<String>()
                 .ifThen(() -> true, stringSupplier)
                 .elseDefault(() -> "");
@@ -81,8 +73,6 @@ class IfElseChainTest {
     /* Two conditions: first one is false, second one true */
     @Test
     void falseTrueSuppliers_trueBranchSupplierEvaluated() {
-        MockitoAnnotations.initMocks(this);
-
         new IfElseChain<String>()
                 .ifThen(() -> false, () -> "")
                 .ifThen(() -> true, stringSupplier)
@@ -93,8 +83,6 @@ class IfElseChainTest {
 
     @Test
     void falseTrueSuppliers_falseBranchSupplierNotEvaluated() {
-        MockitoAnnotations.initMocks(this);
-
         new IfElseChain<String>()
                 .ifThen(() -> false, stringSupplier)
                 .ifThen(() -> true, () -> "")
@@ -105,8 +93,6 @@ class IfElseChainTest {
 
     @Test
     void falseTrueSuppliers_elseBranchSupplierNotEvaluated() {
-        MockitoAnnotations.initMocks(this);
-
         new IfElseChain<String>()
                 .ifThen(() -> false, () -> "")
                 .ifThen(() -> true, () -> "")
@@ -118,8 +104,6 @@ class IfElseChainTest {
     /* Two conditions: first one is true, second one false */
     @Test
     void trueFalseSuppliers_trueBranchSupplierEvaluated() {
-        MockitoAnnotations.initMocks(this);
-
         new IfElseChain<String>()
                 .ifThen(() -> true, stringSupplier)
                 .ifThen(() -> false, () -> "")
@@ -130,8 +114,6 @@ class IfElseChainTest {
 
     @Test
     void trueFalseSuppliers_falseBranchSupplierNotEvaluated() {
-        MockitoAnnotations.initMocks(this);
-
         new IfElseChain<String>()
                 .ifThen(() -> true, () -> "")
                 .ifThen(() -> false, stringSupplier)
@@ -142,8 +124,6 @@ class IfElseChainTest {
 
     @Test
     void trueFalseSuppliers_elseBranchSupplierNotEvaluated() {
-        MockitoAnnotations.initMocks(this);
-
         new IfElseChain<String>()
                 .ifThen(() -> true, () -> "")
                 .ifThen(() -> false, () -> "")
@@ -155,8 +135,6 @@ class IfElseChainTest {
     /* Two conditions, both true */
     @Test
     void trueTrueSuppliers_firstTrueBranchSupplierEvaluated() {
-        MockitoAnnotations.initMocks(this);
-
         new IfElseChain<String>()
                 .ifThen(() -> true, stringSupplier)
                 .ifThen(() -> true, () -> "")
@@ -167,8 +145,6 @@ class IfElseChainTest {
 
     @Test
     void trueTrueSuppliers_secondTrueBranchSupplierNotEvaluated() {
-        MockitoAnnotations.initMocks(this);
-
         new IfElseChain<String>()
                 .ifThen(() -> true, () -> "")
                 .ifThen(() -> true, stringSupplier)
@@ -179,8 +155,6 @@ class IfElseChainTest {
 
     @Test
     void trueTrueSuppliers_elseBranchSupplierNotEvaluated() {
-        MockitoAnnotations.initMocks(this);
-
         new IfElseChain<String>()
                 .ifThen(() -> true, () -> "")
                 .ifThen(() -> true, () -> "")
@@ -190,14 +164,13 @@ class IfElseChainTest {
     }
 
 /*
-╔═╗┌─┐┌─┐┌─┐┬─┐┌┬┐  ┬─┐┌─┐┌─┐┬ ┬┬ ┌┬┐  ┬  ┬┌─┐┬  ┬ ┬┌─┐┌─┐
-╠═╣└─┐└─┐├┤ ├┬┘ │   ├┬┘├┤ └─┐│ ││  │   └┐┌┘├─┤│  │ │├┤ └─┐
-╩ ╩└─┘└─┘└─┘┴└─ ┴   ┴└─└─┘└─┘└─┘┴─┘┴    └┘ ┴ ┴┴─┘└─┘└─┘└─┘
+               ╔═╗┌─┐┌─┐┌─┐┬─┐┌┬┐  ┬─┐┌─┐┌─┐┬ ┬┬ ┌┬┐  ┬  ┬┌─┐┬  ┬ ┬┌─┐┌─┐
+               ╠═╣└─┐└─┐├┤ ├┬┘ │   ├┬┘├┤ └─┐│ ││  │   └┐┌┘├─┤│  │ │├┤ └─┐
+               ╩ ╩└─┘└─┘└─┘┴└─ ┴   ┴└─└─┘└─┘└─┘┴─┘┴    └┘ ┴ ┴┴─┘└─┘└─┘└─┘
 */
 
     @Test
     void noIfThenSuppliers_elseSupplierResultReturned() {
-        MockitoAnnotations.initMocks(this);
         doReturn(ELSE_VALUE).when(stringSupplier).get();
 
         String chainResult = new IfElseChain<String>().elseDefault(stringSupplier);
@@ -207,7 +180,6 @@ class IfElseChainTest {
 
     @Test
     void singleFalseSupplier_elseSupplierResultReturned() {
-        MockitoAnnotations.initMocks(this);
         doReturn(ELSE_VALUE).when(stringSupplier).get();
 
         String chainResult = new IfElseChain<String>()
@@ -220,7 +192,6 @@ class IfElseChainTest {
 
     @Test
     void singleTrueSupplier_trueSupplierResultReturned() {
-        MockitoAnnotations.initMocks(this);
         doReturn(TRUE_VALUE).when(stringSupplier).get();
 
         String chainResult = new IfElseChain<String>()
@@ -232,7 +203,6 @@ class IfElseChainTest {
 
     @Test
     void trueFalseSuppliers_trueSupplierResultReturned() {
-        MockitoAnnotations.initMocks(this);
         doReturn(TRUE_VALUE).when(stringSupplier).get();
 
         String chainResult = new IfElseChain<String>()
@@ -245,7 +215,6 @@ class IfElseChainTest {
 
     @Test
     void falseTrueSuppliers_firstTrueSupplierResultReturned() {
-        MockitoAnnotations.initMocks(this);
         doReturn(TRUE_VALUE).when(stringSupplier).get();
 
         String chainResult = new IfElseChain<String>()
@@ -258,7 +227,6 @@ class IfElseChainTest {
 
     @Test
     void trueTrueSuppliers_firstTrueSupplierResultReturned() {
-        MockitoAnnotations.initMocks(this);
         doReturn(TRUE_VALUE).when(stringSupplier).get();
 
         String chainResult = new IfElseChain<String>()
