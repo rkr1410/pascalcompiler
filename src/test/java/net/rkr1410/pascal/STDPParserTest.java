@@ -1,6 +1,7 @@
 package net.rkr1410.pascal;
 
 import net.rkr1410.lang.ParserFactory;
+import net.rkr1410.lang.frontend.Parser;
 import net.rkr1410.lang.frontend.Source;
 import net.rkr1410.lang.messages.Message;
 import net.rkr1410.lang.messages.MessageReceiver;
@@ -23,14 +24,17 @@ class STDPParserTest {
     void test() throws Exception {
         doReturn("abcde", "fg", "hij", null).when(reader).readLine();
         Source source = new Source(reader);
-        source.addMessageReceiver(new MessageReceiver() {
+        MessageReceiver receiver = new MessageReceiver() {
             @Override
             public void messageReceived(Message message) {
                 System.err.println("Received message " + message);
             }
-        });
+        };
 
-        ParserFactory.createParser("pascal", "top-down", source)
-                .parse();
+        Parser parser = ParserFactory.createParser("pascal", "top-down", source);
+        source.addMessageReceiver(receiver);
+        parser.addMessageReceiver(receiver);
+
+        parser.parse();
     }
 }

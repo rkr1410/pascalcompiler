@@ -4,8 +4,14 @@ import net.rkr1410.lang.frontend.EofToken;
 import net.rkr1410.lang.frontend.Parser;
 import net.rkr1410.lang.frontend.Scanner;
 import net.rkr1410.lang.frontend.Token;
+import net.rkr1410.lang.messages.Message;
+import net.rkr1410.lang.messages.MessageHelper;
+import net.rkr1410.lang.messages.MessageProducer;
+import net.rkr1410.lang.messages.MessageType;
 
-public class STDPParser extends Parser {
+public class STDPParser extends Parser implements MessageProducer {
+
+
     /**
      * Constructor
      *
@@ -24,8 +30,8 @@ public class STDPParser extends Parser {
         while (!((token = nextToken()) instanceof EofToken));
 
         float elapsed = (System.currentTimeMillis() - start) / 1000f;
-        System.err.printf("Found %s errors\n", getErrorCount());
-        System.err.printf("Parsed %s lines in %.3f seconds\n", token.getLineNumber(), elapsed);
+
+        sendMessage(new Message(MessageType.PARSER_STATS, new Object[] {token.getLineNumber(), getErrorCount(), elapsed}));
     }
 
     @Override
