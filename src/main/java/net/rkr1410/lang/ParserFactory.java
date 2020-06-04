@@ -1,7 +1,10 @@
-package net.rkr1410.lang.frontend;
+package net.rkr1410.lang;
 
-import net.rkr1410.pascal.STDPParser;
-import net.rkr1410.pascal.STDPScanner;
+import net.rkr1410.lang.frontend.Parser;
+import net.rkr1410.lang.frontend.Scanner;
+import net.rkr1410.lang.frontend.Source;
+import net.rkr1410.pascal.frontend.STDPParser;
+import net.rkr1410.pascal.frontend.STDPScanner;
 
 /**
  * <h1>ParserFactory</h1>

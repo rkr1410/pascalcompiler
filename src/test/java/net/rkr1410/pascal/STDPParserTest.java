@@ -1,5 +1,6 @@
 package net.rkr1410.pascal;
 
+import net.rkr1410.lang.ParserFactory;
 import net.rkr1410.lang.frontend.Source;
 import net.rkr1410.lang.messages.Message;
 import net.rkr1410.lang.messages.MessageReceiver;
@@ -9,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 
 import static org.mockito.Mockito.doReturn;
 
@@ -29,8 +29,8 @@ class STDPParserTest {
                 System.err.println("Received message " + message);
             }
         });
-        STDPParser p = new STDPParser(new STDPScanner(source));
 
-        p.parse();
+        ParserFactory.createParser("pascal", "top-down", source)
+                .parse();
     }
 }

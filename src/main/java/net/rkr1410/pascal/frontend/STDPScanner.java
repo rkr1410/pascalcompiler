@@ -1,4 +1,4 @@
-package net.rkr1410.pascal;
+package net.rkr1410.pascal.frontend;
 
 import net.rkr1410.lang.frontend.EofToken;
 import net.rkr1410.lang.frontend.Scanner;
