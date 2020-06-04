@@ -67,6 +67,9 @@ public class Token {
         return source.nextChar();
     }
 
+    /**
+     * @return number of source line which this token was extracted from
+     */
     public int getLineNumber() {
         return lineNumber;
     }

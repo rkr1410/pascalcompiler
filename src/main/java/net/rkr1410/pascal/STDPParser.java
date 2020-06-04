@@ -11,7 +11,7 @@ public class STDPParser extends Parser {
      *
      * @param scanner scanner to use with this parser
      */
-    protected STDPParser(Scanner scanner) {
+    public STDPParser(Scanner scanner) {
         super(scanner);
     }
 

@@ -47,11 +47,25 @@ public abstract class Scanner {
      */
     protected abstract Token extractToken() throws IOException;
 
-    public char currentChar() throws IOException {
+    /**
+     * Returns character from source at current position, forwards
+     * the call to <code>Source</code>.
+     *
+     * @return current character from the source
+     * @throws IOException if an I/O error occurs
+     */
+    protected char currentChar() throws IOException {
         return source.currentChar();
     }
 
-    public char nextChar() throws IOException {
+    /**
+     * Returns next character from source, forwards
+     * the call to <code>Source</code>.
+     *
+     * @return next character from the source, after moving forward
+     * @throws IOException if an I/O error occurs
+     */
+    protected char nextChar() throws IOException {
         return source.nextChar();
     }
 }
