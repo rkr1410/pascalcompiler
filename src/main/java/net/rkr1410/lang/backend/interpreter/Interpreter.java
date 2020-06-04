@@ -1,6 +1,6 @@
 package net.rkr1410.lang.backend.interpreter;
 
-import net.rkr1410.lang.backend.AbstractBackend;
+import net.rkr1410.lang.backend.Backend;
 import net.rkr1410.lang.intermediate.IntermediateCode;
 import net.rkr1410.lang.intermediate.SymbolTable;
 import net.rkr1410.lang.messages.Message;
@@ -9,7 +9,7 @@ import net.rkr1410.lang.messages.MessageType;
 /**
  * Executing interpreter
  */
-public class Interpreter extends AbstractBackend {
+public class Interpreter extends Backend {
 
     /**
      * Process the intermediate code and symbol table obtained from parser to execute

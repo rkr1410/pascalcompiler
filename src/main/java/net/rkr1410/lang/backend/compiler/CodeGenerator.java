@@ -1,6 +1,6 @@
 package net.rkr1410.lang.backend.compiler;
 
-import net.rkr1410.lang.backend.AbstractBackend;
+import net.rkr1410.lang.backend.Backend;
 import net.rkr1410.lang.intermediate.IntermediateCode;
 import net.rkr1410.lang.intermediate.SymbolTable;
 import net.rkr1410.lang.messages.Message;
@@ -9,7 +9,7 @@ import net.rkr1410.lang.messages.MessageType;
 /**
  * Compiler
  */
-public class CodeGenerator extends AbstractBackend {
+public class CodeGenerator extends Backend {
 
     /**
      * Process the intermediate code and symbol table obtained from parser to generate

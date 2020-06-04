@@ -5,14 +5,14 @@ import net.rkr1410.lang.intermediate.SymbolTable;
 import net.rkr1410.lang.messages.MessageHelper;
 import net.rkr1410.lang.messages.MessageProducer;
 
-public abstract class AbstractBackend implements MessageProducer {
+public abstract class Backend implements MessageProducer {
 
     protected SymbolTable symbolTable;
     protected IntermediateCode intermediateCode;
 
     private MessageHelper messageHelper;
 
-    public AbstractBackend() {
+    public Backend() {
         this.messageHelper = new MessageHelper();
     }
 

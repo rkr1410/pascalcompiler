@@ -2,10 +2,8 @@ package net.rkr1410.lang.frontend;
 
 import net.rkr1410.lang.intermediate.IntermediateCode;
 import net.rkr1410.lang.intermediate.SymbolTable;
-import net.rkr1410.lang.messages.Message;
 import net.rkr1410.lang.messages.MessageHelper;
 import net.rkr1410.lang.messages.MessageProducer;
-import net.rkr1410.lang.messages.MessageReceiver;
 
 /**
  * <h1>Parser</h1>
@@ -64,6 +62,14 @@ public abstract class Parser implements MessageProducer {
     //TODO Exception? Maybe narrow the type
     public Token nextToken() throws Exception {
         return scanner.nextToken();
+    }
+
+    public SymbolTable getSymbolTable() {
+        return symbolTable;
+    }
+
+    public IntermediateCode getIntermediateCode() {
+        return intermediateCode;
     }
 
     @Override

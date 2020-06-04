@@ -2,11 +2,6 @@ package net.rkr1410.lang.backend;
 
 import net.rkr1410.lang.backend.compiler.CodeGenerator;
 import net.rkr1410.lang.backend.interpreter.Interpreter;
-import net.rkr1410.lang.frontend.Parser;
-import net.rkr1410.lang.frontend.Scanner;
-import net.rkr1410.lang.frontend.Source;
-import net.rkr1410.pascal.frontend.STDPParser;
-import net.rkr1410.pascal.frontend.STDPScanner;
 
 /**
  * <h1>BackendFactory</h1>
@@ -23,7 +18,7 @@ public class BackendFactory {
      * @param operation either "compile" or "execute"
      * @return a compiler or an interpreter back end component.
      */
-    public static AbstractBackend createBackend(String operation) {
+    public static Backend createBackend(String operation) {
         switch (operation == null ? "" : operation.toUpperCase()) {
             case COMMAND_COMPILER:
                 return new CodeGenerator();
