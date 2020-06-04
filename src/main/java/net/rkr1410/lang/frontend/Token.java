@@ -66,4 +66,8 @@ public class Token {
     protected char nextChar() throws IOException {
         return source.nextChar();
     }
+
+    public int getLineNumber() {
+        return lineNumber;
+    }
 }

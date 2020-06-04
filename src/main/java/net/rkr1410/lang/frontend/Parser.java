@@ -46,7 +46,7 @@ public abstract class Parser {
      *
      * @return error count
      */
-    public abstract int etErrorCount();
+    public abstract int getErrorCount();
 
     /**
      * Forwards the call to scanner's <code>currentToken()</code>
