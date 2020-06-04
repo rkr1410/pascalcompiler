@@ -71,6 +71,51 @@ public class Source {
         return charAtOffset(1);
     }
 
+    /**
+     * Reads next line from source
+     *
+     * @throws IOException if an I/O error occurs
+     */
+    public void readLine() throws IOException {
+        line = reader.readLine();
+        linePosition = 0;
+
+        if (line != null) {
+            lineNumber++;
+        }
+        initialized = true;
+    }
+
+    /**
+     * @return current line number
+     */
+    public int getLineNumber() {
+        return lineNumber;
+    }
+
+    /**
+     * @return current lie offset
+     */
+    public int getLinePosition() {
+        return linePosition;
+    }
+
+    /**
+     * Closes source
+     *
+     * @throws IOException if an I/O error occurred
+     */
+    public void close() throws IOException {
+        if (reader != null) {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw e;
+            }
+        }
+    }
+
     private char charAtOffset(int offset) {
         if (!sourceLineAvailable()) {
             return EOF;
@@ -94,36 +139,4 @@ public class Source {
             readLine();
         }
     }
-
-    /**
-     * Reads next line from source
-     *
-     * @throws IOException if an I/O error occurs
-     */
-    public void readLine() throws IOException {
-        line = reader.readLine();
-        linePosition = 0;
-
-        if (line != null) {
-            lineNumber++;
-        }
-        initialized = true;
-    }
-
-    /**
-     * Closes source
-     *
-     * @throws IOException if an I/O error occurred
-     */
-    public void close() throws IOException {
-        if (reader != null) {
-            try {
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw e;
-            }
-        }
-    }
-
 }
