@@ -5,6 +5,7 @@ import net.rkr1410.util.LearningExperience;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.function.Supplier;
 
@@ -35,13 +36,15 @@ public class Source {
      * @throws IOException if an I/O error occurred
      */
     public Source(BufferedReader reader) throws IOException {
-        this.reader = reader;
+        this.reader = Objects.requireNonNull(reader, "Reader cannot be null");
         this.lineNumber = 0;
         this.lineOffset = BEFORE_START_OF_FILE;
     }
 
     /**
      * Returns character from source at current position.
+     * <p>
+     * This will move the read index to starting character if reading has not started yet.
      *
      * @return source char at current position
      * @throws Exception if an error occurs
@@ -57,12 +60,17 @@ public class Source {
     /**
      * Returns next character from source. Current one is consumed
      * (calls to <code>currentChar()</code> will no longer return it,
-     * returning this one instead)
+     * returning this one instead).
+     * <p>
+     * This will return <code>EOL</code> if called as first method on a fresh reader.
      *
      * @return next source character
      * @throws Exception if an error occurs
      */
     public char nextChar() throws Exception {
+        if (lineOffset == BEFORE_START_OF_FILE) {
+            throw new IllegalStateException("Call currentChar before calling nextChar!");
+        }
         ++lineOffset;
         return currentChar();
     }
@@ -75,6 +83,7 @@ public class Source {
      * @throws Exception if an error occurs
      */
     public char peekChar() throws Exception {
+        // TODO copy this to nextChar (instead of throwing if nothing is read yet)
         if (outsideLineBounds()) {
             readLineAndNextCharacter();
         }
@@ -126,7 +135,7 @@ public class Source {
     }
 
     private boolean atEndOfLine() {
-        return lineOffset == BEFORE_START_OF_LINE|| lineOffset == line.length();
+        return lineOffset == BEFORE_START_OF_LINE || lineOffset == line.length();
     }
 
     private boolean outsideLineBounds() {
@@ -149,7 +158,7 @@ public class Source {
             } catch (Exception e) {
                 sneakThrow(e);
             }
-            // this should never happen as by this moment we have either returned callable's result or threw
+            // this should never happen as by now we have either returned callable's result or threw
             return (V) null;
         };
     }

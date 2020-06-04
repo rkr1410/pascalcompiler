@@ -192,8 +192,8 @@ class IfElseChainTest {
                    ╠═╣└─┐└─┐├┤ ├┬┘ │   ├┬┘├┤ └─┐│ ││  │   └┐┌┘├─┤│  │ │├┤ └─┐
                    ╩ ╩└─┘└─┘└─┘┴└─ ┴   ┴└─└─┘└─┘└─┘┴─┘┴    └┘ ┴ ┴┴─┘└─┘└─┘└─┘
 
-          Set of tests asserting that the value returned by calling the chain is exactly
-          the value returned by evaluating the supplier for which paired condition supplier returned true as first.
+          Set of tests asserting that the value returned by calling the chain is the value
+                             for which matching condition was met
 */
 
     @Test
