@@ -1,6 +1,8 @@
 package net.rkr1410.pascal;
 
 import net.rkr1410.lang.frontend.Source;
+import net.rkr1410.lang.messages.Message;
+import net.rkr1410.lang.messages.MessageReceiver;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -20,7 +22,14 @@ class STDPParserTest {
     @Test
     void test() throws Exception {
         doReturn("abcde", "fg", "hij", null).when(reader).readLine();
-        STDPParser p = new STDPParser(new STDPScanner(new Source(reader)));
+        Source source = new Source(reader);
+        source.addMessageReceiver(new MessageReceiver() {
+            @Override
+            public void messageReceived(Message message) {
+                System.err.println("Received message " + message);
+            }
+        });
+        STDPParser p = new STDPParser(new STDPScanner(source));
 
         p.parse();
     }

@@ -1,5 +1,10 @@
 package net.rkr1410.lang.frontend;
 
+import net.rkr1410.lang.messages.Message;
+import net.rkr1410.lang.messages.MessageHelper;
+import net.rkr1410.lang.messages.MessageProducer;
+import net.rkr1410.lang.messages.MessageType;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Objects;
@@ -9,9 +14,11 @@ import java.util.Objects;
  *
  * <p>A framework class representing the source program</p>
  */
-public class Source {
+public class Source implements MessageProducer {
     public static final char EOL = '\n';
     public static final char EOF = (char) 0;
+
+    private MessageHelper messageHelper;
 
     private BufferedReader reader;
     private String line;
@@ -27,6 +34,7 @@ public class Source {
     public Source(BufferedReader reader) {
         this.reader = Objects.requireNonNull(reader, "Reader cannot be null");
         this.lineNumber = 0;
+        this.messageHelper = new MessageHelper();
     }
 
     /**
@@ -82,6 +90,7 @@ public class Source {
 
         if (line != null) {
             lineNumber++;
+            sendSourceLineMessage();
         }
         initialized = true;
     }
@@ -138,5 +147,14 @@ public class Source {
         if (!initialized) {
             readLine();
         }
+    }
+
+    private void sendSourceLineMessage() {
+        sendMessage(new Message(MessageType.SOURCE_LINE, new Object[] { lineNumber, line }));
+    }
+
+    @Override
+    public MessageHelper getMessageHelper() {
+        return messageHelper;
     }
 }
