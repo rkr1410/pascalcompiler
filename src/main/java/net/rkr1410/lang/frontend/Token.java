@@ -73,4 +73,36 @@ public class Token {
     public int getLineNumber() {
         return lineNumber;
     }
+
+    /**
+     * @return source line offset at which this token was extracted
+     */
+    public int getLinePosition() {
+        return linePosition;
+    }
+
+    /**
+     * @return text from which this token was constructed
+     */
+    public String getText() {
+        return text;
+    }
+
+    /**
+     * @return TokenType of this token
+     */
+    public TokenType getTokenType() {
+        return tokenType;
+    }
+
+    /**
+     * Returns value associated with this token.
+     * <p>Tokens can have an associated value, e.g. an error token can have
+     * an error code.
+     *
+     * @return token value
+     */
+    public Object getValue() {
+        return value;
+    }
 }
