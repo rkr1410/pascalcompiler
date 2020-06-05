@@ -17,11 +17,6 @@ public class MessageHelper implements MessageProducer {
     }
 
     @Override
-    public void removeMessageReceiver(MessageReceiver receiver) {
-        receivers.remove(receiver);
-    }
-
-    @Override
     public void sendMessage(Message message) {
         receivers.forEach(r -> r.messageReceived(message));
     }

@@ -3,8 +3,9 @@ package net.rkr1410.lang;
 import net.rkr1410.lang.frontend.Parser;
 import net.rkr1410.lang.frontend.Scanner;
 import net.rkr1410.lang.frontend.Source;
+import net.rkr1410.pascal.frontend.PascalErrorHandler;
 import net.rkr1410.pascal.frontend.STDPParser;
-import net.rkr1410.pascal.frontend.STDPScanner;
+import net.rkr1410.pascal.frontend.scanner.STDPScanner;
 
 /**
  * <h1>ParserFactory</h1>
@@ -23,7 +24,10 @@ public class ParserFactory {
         if (LANG_PASCAL.equals(normalizedLanguage)
                 && TYPE_TOP_DOWN.equals(normalizedParserType)) {
             Scanner scanner = new STDPScanner(source);
-            return new STDPParser(scanner);
+            STDPParser parser = new STDPParser(scanner);
+            PascalErrorHandler errorHandler = new PascalErrorHandler();
+            parser.setErrorHandler(errorHandler);
+            return parser;
         }
         return null;
     }

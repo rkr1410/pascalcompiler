@@ -9,13 +9,6 @@ public interface MessageProducer {
         }
     }
 
-    default void removeMessageReceiver(MessageReceiver receiver) {
-        MessageHelper messageHelper = getMessageHelper();
-        if (messageHelper != null) {
-            messageHelper.removeMessageReceiver(receiver);
-        }
-    }
-
     default void sendMessage(Message message) {
         MessageHelper messageHelper = getMessageHelper();
         if (messageHelper != null) {

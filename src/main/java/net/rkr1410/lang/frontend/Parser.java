@@ -2,8 +2,10 @@ package net.rkr1410.lang.frontend;
 
 import net.rkr1410.lang.intermediate.IntermediateCode;
 import net.rkr1410.lang.intermediate.SymbolTable;
+import net.rkr1410.lang.messages.Message;
 import net.rkr1410.lang.messages.MessageHelper;
 import net.rkr1410.lang.messages.MessageProducer;
+import net.rkr1410.lang.messages.MessageReceiver;
 
 /**
  * <h1>Parser</h1>
@@ -11,12 +13,13 @@ import net.rkr1410.lang.messages.MessageProducer;
  * <p>A language-independent framework class.
  * To be implemented by language-specific subclasses.</p>
  */
-public abstract class Parser implements MessageProducer {
+public abstract class Parser<T extends ErrorCode> implements MessageProducer {
 
     protected SymbolTable symbolTable;
     protected IntermediateCode intermediateCode;
     protected Scanner scanner;
     protected MessageHelper messageHelper;
+    protected ErrorHandler<T> errorHandler;
 
     /**
      * Constructor
@@ -25,6 +28,11 @@ public abstract class Parser implements MessageProducer {
     protected Parser(Scanner scanner) {
         this.scanner = scanner;
         this.messageHelper = new MessageHelper();
+    }
+
+    public void setErrorHandler(ErrorHandler<T> errorHandler) {
+        this.errorHandler = errorHandler;
+        this.errorHandler.addMessageReceiver(this::sendMessage);
     }
 
     /**
