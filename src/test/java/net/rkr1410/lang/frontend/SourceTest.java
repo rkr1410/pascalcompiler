@@ -33,7 +33,7 @@ class SourceTest {
                 .isInstanceOf(NullPointerException.class);
     }
 
-/*
+/**
                                ┌─┐┬ ┬┬─┐┬─┐┌─┐┌┐┌┌┬┐┌─┐┬ ┬┌─┐┬─┐
                                │  │ │├┬┘├┬┘├┤ │││ │ │  ├─┤├─┤├┬┘
                                └─┘└─┘┴└─┴└─└─┘┘└┘ ┴ └─┘┴ ┴┴ ┴┴└─
@@ -97,7 +97,7 @@ class SourceTest {
         assertThat(c).isEqualTo(EOF);
     }
 
-/*
+/**
                                ┌─┐┌─┐┌─┐┬┌─┌─┐┬ ┬┌─┐┬─┐
                                ├─┘├┤ ├┤ ├┴┐│  ├─┤├─┤├┬┘
                                ┴  └─┘└─┘┴ ┴└─┘┴ ┴┴ ┴┴└─
@@ -161,7 +161,7 @@ class SourceTest {
         assertThat(c).isEqualTo(EOF);
     }
 
-/*
+/**
                                        ┌┐┌┌─┐─┐ ┬┌┬┐┌─┐┬ ┬┌─┐┬─┐
                                        │││├┤ ┌┴┬┘ │ │  ├─┤├─┤├┬┘
                                        ┘└┘└─┘┴ └─ ┴ └─┘┴ ┴┴ ┴┴└─
@@ -196,7 +196,7 @@ class SourceTest {
         assertThatThrownBy(() -> source.nextChar()).isInstanceOf(IOException.class);
     }
 
-/*
+/**
                                       ┌─┐┌─┐┌┬┐┌─┐┬  ┌─┐─┐ ┬
                                       │  │ ││││├─┘│  ├┤ ┌┴┬┘
                                       └─┘└─┘┴ ┴┴  ┴─┘└─┘┴ └─
