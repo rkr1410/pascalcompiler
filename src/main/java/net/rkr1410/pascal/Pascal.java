@@ -12,6 +12,7 @@ import net.rkr1410.lang.intermediate.SymbolTable;
 import net.rkr1410.lang.messages.Message;
 import net.rkr1410.lang.messages.MessageReceiver;
 import net.rkr1410.util.Utils;
+import net.rkr1410.util.Utils.ThrowingRunnable;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -46,43 +47,29 @@ public class Pascal implements MessageReceiver {
         }
     }
 
-    void parse() {
-        try {
-            parser.parse();
-            source.close();
+    void parse() throws Exception {
+        parser.parse();
+        source.close();
 
-            intermediateCode = parser.getIntermediateCode();
-            symbolTable = parser.getSymbolTable();
-        } catch (Exception e) {
-            Utils.sneakThrow(e);
-        }
+        intermediateCode = parser.getIntermediateCode();
+        symbolTable = parser.getSymbolTable();
     }
 
-    void run() {
-        try {
-            backend.process(intermediateCode, symbolTable);
-        } catch (Exception e) {
-            Utils.sneakThrow(e);
-        }
-    }
-
-    static void wrapErrors(Runnable r) {
-        try {
-            r.run();
-        } catch (Exception e) {
-            System.err.println("----==[ internal error ]==----");
-            e.printStackTrace();
-        }
+    void run() throws Exception {
+        backend.process(intermediateCode, symbolTable);
     }
 
     public static void main(String[] args) {
         try {
             //Pascal pascal = new Pascal(args[0], args[1], "");
             Pascal pascal = new Pascal("execute", "c:\\stuff\\java\\pascal\\src\\main\\resources\\hello.pas", "");
-            wrapErrors(pascal::parse);
-            wrapErrors(pascal::run);
+            pascal.parse();
+            pascal.run();
         } catch (ArrayIndexOutOfBoundsException e) {
             System.err.println("Usage: Pascal [execute|compile] pathToPascalSource");
+        } catch (Exception e) {
+            System.err.println("----==[ internal error ]==----");
+            e.printStackTrace();
         }
     }
 
