@@ -15,7 +15,7 @@ import static net.rkr1410.pascal.frontend.PascalErrorCode.TOO_MANY_ERRORS;
  * <p>Handler for Pascal syntax errors
  */
 public class PascalErrorHandler extends ErrorHandler<PascalErrorCode> implements MessageProducer {
-    private static final int MAX_ERRORS = 15;
+    private static final int MAX_ERRORS = 115;
 
     private int errorCount;
     private MessageHelper messageHelper;

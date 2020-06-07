@@ -22,7 +22,24 @@ class STDPParserTest {
 
     @Test
     void test() throws Exception {
-        doReturn("abcde", "fg", "hij", null).when(reader).readLine();
+        doReturn(
+                "{This is a comment.}",
+                "{This is a comment\nthat spans several\nsource lines.}",
+                "Two{comments in}{a row} here",
+                "{Word tokens}",
+                "Hello world",
+                "begin BEGIN Begin BeGiN begins",
+                "{String tokens}",
+                "'Hello, world.'",
+                "'It''s Friday!'",
+                "''",
+                "' '' '' '   ''''''",
+                "'This string\nspans\nsource lines.'",
+                "{Bad tokens}",
+                "123e99  123456789012345  1234.56E.  3.  5..  .14  314.e-2",
+                "What?",
+                "'String not closed",
+                null).when(reader).readLine();
         Source source = new Source(reader);
         MessageReceiver receiver = new MessageReceiver() {
             @Override
@@ -32,7 +49,7 @@ class STDPParserTest {
         };
 
         Parser parser = ParserFactory.createParser("pascal", "top-down", source);
-        source.addMessageReceiver(receiver);
+        //source.addMessageReceiver(receiver);
         parser.addMessageReceiver(receiver);
 
         parser.parse();
