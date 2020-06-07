@@ -4,6 +4,11 @@ import net.rkr1410.lang.frontend.EofToken;
 import net.rkr1410.lang.frontend.Scanner;
 import net.rkr1410.lang.frontend.Source;
 import net.rkr1410.lang.frontend.Token;
+import net.rkr1410.pascal.frontend.PascalErrorCode;
+import net.rkr1410.pascal.frontend.PascalTokenType;
+import net.rkr1410.pascal.frontend.tokens.PascalErrorToken;
+import net.rkr1410.pascal.frontend.tokens.PascalStringToken;
+import net.rkr1410.pascal.frontend.tokens.PascalWordToken;
 
 import java.io.IOException;
 
@@ -30,11 +35,31 @@ public class STDPScanner extends Scanner {
             return parseError;
         }
 
-        if (currentChar() == EOF) {
-            return new EofToken(source);
+        Token token;
+        char c = currentChar();
+        if (c == EOF) {
+            token = new EofToken(source);
+        } else if (Character.isLetter(c)) {
+            token = new PascalWordToken(source);
+/*
+        } else if (Character.isDigit(c)) {
+            // token = new PascalNumberToken(source);
+
+ */
+        } else if (c == '\'') {
+            token = new PascalStringToken(source);
+        }
+        //todo it's wrong, keys there are multi-char strings
+        //else if (PascalTokenType.isSpecialSymbol()) {
+        else {
+            nextChar();
+            token = new PascalErrorToken(source, PascalErrorCode.INVALID_CHARACTER, Character.toString(c));
         }
 
-        return new Token(source);
+        //todo or not? extracting token should put as at next char already?
+        //nextChar(); // consume character
+
+        return token;
     }
 
 

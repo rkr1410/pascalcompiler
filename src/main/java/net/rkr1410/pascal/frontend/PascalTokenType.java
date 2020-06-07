@@ -61,5 +61,11 @@ public enum PascalTokenType implements TokenType {
         return text;
     }
 
+    public static boolean isSpecialSymbol(String s) {
+        return SPECIAL_SYMBOLS.containsKey(s);
+    }
 
+    public static boolean isReservedWord(String s) {
+        return RESERVED_WORDS.contains(s);
+    }
 }

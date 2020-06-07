@@ -12,10 +12,11 @@ import net.rkr1410.lang.intermediate.SymbolTable;
 import net.rkr1410.lang.messages.Message;
 import net.rkr1410.lang.messages.MessageReceiver;
 import net.rkr1410.util.Utils;
-import net.rkr1410.util.Utils.ThrowingRunnable;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import static net.rkr1410.pascal.frontend.PascalTokenType.STRING;
 
@@ -60,9 +61,10 @@ public class Pascal implements MessageReceiver {
     }
 
     public static void main(String[] args) {
+        Pascal pascal = null;
         try {
             //Pascal pascal = new Pascal(args[0], args[1], "");
-            Pascal pascal = new Pascal("execute", "c:\\stuff\\java\\pascal\\src\\main\\resources\\hello.pas", "");
+            pascal = new Pascal("execute", "c:\\stuff\\java\\pascal\\src\\main\\resources\\hello.pas", "");
             pascal.parse();
             pascal.run();
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -71,11 +73,18 @@ public class Pascal implements MessageReceiver {
             System.err.println("----==[ internal error ]==----");
             e.printStackTrace();
         }
+        if (pascal != null) {
+            for (Object[] body : pascal.tokenBodies) {
+                pascal.printTokenData(body);
+            }
+        }
     }
+
+    List<Object[]> tokenBodies = new ArrayList<>();
 
     @Override
     public void messageReceived(Message message) {
-        //TODO: better message types, break down listeners
+        //TODO: better message types, break down listeners?
         Object[] body = (Object[]) message.getBody();
         switch (message.getType()) {
             case SOURCE_LINE:
@@ -91,7 +100,8 @@ public class Pascal implements MessageReceiver {
                 printCompilerStats(body);
                 break;
             case TOKEN:
-                printTokenData(body);
+                //printTokenData(body);
+                tokenBodies.add(body);
                 break;
             case SYNTAX_ERROR:
                 printSyntaxError(body);
@@ -150,13 +160,14 @@ public class Pascal implements MessageReceiver {
             if (tokenType == STRING) {
                 tokenValue = "\"" + tokenValue + "\"";
             }
-            System.err.printf(", %s", tokenValue);
+            System.err.printf(", %s\n", tokenValue);
         } else {
             System.err.println();
         }
     }
 
-    private static final int PREFIX_WIDTH = 5;
+    private static final int PREFIX_WIDTH = 3;
+
     void printSyntaxError(Object[] body) {
         int lineNumber = (Integer) body[0];
         int position = (Integer) body[1];

@@ -57,8 +57,19 @@ public class Token {
     }
 
     /**
-     * Returns next character from source, forwards
-     * the call to <code>Source</code>.
+     * Returns next character from source, without consuming current one.
+     * forwards the call to <code>Source</code>.
+     *
+     * @return next character from the source, after moving forward
+     * @throws IOException if an I/O error occurs
+     */
+    protected char peekChar() throws IOException {
+        return source.peekChar();
+    }
+
+    /**
+     * Returns next character from source, consuming current one.
+     * forwards the call to <code>Source</code>.
      *
      * @return next character from the source, after moving forward
      * @throws IOException if an I/O error occurs

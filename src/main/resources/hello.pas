@@ -7,6 +7,6 @@ VAR
 
 BEGIN {hello}
     FOR i:=1 TO 10 DO BEGIN
-        writeln('Hello world');
+        writeln('Hell''o, world!');
     END;
-END {hello}.
+END. {hello}

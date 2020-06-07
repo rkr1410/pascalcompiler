@@ -25,11 +25,14 @@ public class Skipper {
     Token skipWhitespaceAndComments() throws IOException {
         while (isWhitespaceOrComment()) {
             switch (skipComment()) {
+                // this is whitespace, skip it and continue loop
                 case COMMENT_NOT_FOUND:
                     source.nextChar();
                     break;
+                // Comment was opened, but never closed
                 case MISSING_CLOSING_BRACE:
                     return new PascalErrorToken(source, PascalErrorCode.UNEXPECTED_EOF, "");
+                // Skipped comment, continue loop
                 case COMMENT_SKIPPED:
                 default:
                     // NOOP

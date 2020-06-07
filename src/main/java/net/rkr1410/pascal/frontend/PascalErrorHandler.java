@@ -49,7 +49,8 @@ public class PascalErrorHandler extends ErrorHandler<PascalErrorCode> implements
         sendMessage(new Message(SYNTAX_ERROR, new Object[]{
                 0, 0, "", "FATAL_ERROR: " + code
         }));
-        System.exit(code.getStatus());
+        //todo how to nicely stop the program but still allow for printing some debug info?
+        //System.exit(code.getStatus());
     }
 
     @Override
