@@ -29,22 +29,30 @@ public enum PascalTokenType implements TokenType {
     IDENTIFIER, INTEGER, REAL, STRING, ERROR, END_OF_FILE;
 
     private static final int FIRST_RESERVED_INDEX = AND.ordinal();
-    private static final int LAST_RESERVED_INDEX  = WITH.ordinal();
+    private static final int LAST_RESERVED_INDEX = WITH.ordinal();
     private static final int FIRST_SPECIAL_INDEX = PLUS.ordinal();
-    private static final int LAST_SPECIAL_INDEX  = DOT_DOT.ordinal();
+    private static final int LAST_SPECIAL_INDEX = DOT_DOT.ordinal();
 
-    /** Set of uppercase reserved words */
+    /**
+     * Set of uppercase reserved words
+     */
     private static Set<String> RESERVED_WORDS;
-    /** Special symbols mapped to token types, e.g. ">=":GREATER_EQUALS*/
+    /**
+     * Special symbols mapped to token types, e.g. ">=":GREATER_EQUALS
+     */
     private static Map<String, PascalTokenType> SPECIAL_SYMBOLS;
+    private static Set<Character> SPECIAL_SYMBOL_START_CHARACTERS;
 
     static {
         RESERVED_WORDS = Arrays.asList(values())
-                .subList(FIRST_RESERVED_INDEX, LAST_RESERVED_INDEX).stream()
+                .subList(FIRST_RESERVED_INDEX, LAST_RESERVED_INDEX + 1).stream()
                 .map(PascalTokenType::name).collect(Collectors.toSet());
         SPECIAL_SYMBOLS = Arrays.asList(values())
-                .subList(FIRST_SPECIAL_INDEX, LAST_SPECIAL_INDEX).stream()
+                .subList(FIRST_SPECIAL_INDEX, LAST_SPECIAL_INDEX + 1).stream()
                 .collect(Collectors.toMap(PascalTokenType::getText, ptt -> ptt));
+        SPECIAL_SYMBOL_START_CHARACTERS = SPECIAL_SYMBOLS.values().stream()
+                .map(tt -> tt.getText().charAt(0))
+                .collect(Collectors.toSet());
     }
 
     private String text;
@@ -61,11 +69,26 @@ public enum PascalTokenType implements TokenType {
         return text;
     }
 
-    public static boolean isSpecialSymbol(String s) {
-        return SPECIAL_SYMBOLS.containsKey(s);
+    public String toString() {
+        return name();
+    }
+
+    public static PascalTokenType getSpecialSymbol(String s) {
+        return SPECIAL_SYMBOLS.get(s);
     }
 
     public static boolean isReservedWord(String s) {
         return RESERVED_WORDS.contains(s);
+    }
+
+    public static boolean isSpecialSymbol(char c) {
+        return SPECIAL_SYMBOL_START_CHARACTERS.contains(c);
+    }
+
+    public static boolean isExclusivelySingleCharacterSpecialSymbol(char c) {
+        return SPECIAL_SYMBOL_START_CHARACTERS.contains(c)
+                && c != '>'
+                && c != '<'
+                && c != '.';
     }
 }

@@ -7,6 +7,7 @@ import net.rkr1410.lang.frontend.Token;
 import net.rkr1410.pascal.frontend.PascalErrorCode;
 import net.rkr1410.pascal.frontend.PascalTokenType;
 import net.rkr1410.pascal.frontend.tokens.PascalErrorToken;
+import net.rkr1410.pascal.frontend.tokens.PascalSpecialSymbolToken;
 import net.rkr1410.pascal.frontend.tokens.PascalStringToken;
 import net.rkr1410.pascal.frontend.tokens.PascalWordToken;
 
@@ -49,8 +50,9 @@ public class STDPScanner extends Scanner {
         } else if (c == '\'') {
             token = new PascalStringToken(source);
         }
-        //todo it's wrong, keys there are multi-char strings
-        //else if (PascalTokenType.isSpecialSymbol()) {
+        else if (PascalTokenType.isSpecialSymbol(c)) {
+            token = new PascalSpecialSymbolToken(source);
+        }
         else {
             nextChar();
             token = new PascalErrorToken(source, PascalErrorCode.INVALID_CHARACTER, Character.toString(c));
